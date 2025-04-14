@@ -5,175 +5,45 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Fishka</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #1f1f1f;
-      color: #f0f0f0;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #222;
-      padding: 1em;
-    }
-    .lang-switcher button {
-      background: none;
-      border: none;
-      color: #f0f0f0;
-      margin: 0 0.3em;
-      cursor: pointer;
-      opacity: 0.6;
-    }
-    .lang-switcher button.active {
-      opacity: 1;
-      font-weight: bold;
-    }
-    main {
-      padding: 2em;
-    }
-    .buy-btn {
-      padding: 0.5em 1.5em;
-      background: #0f0;
-      border: none;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    /* Cart Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.6);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #2e2e2e;
-      padding: 2em;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-    }
-    .modal-content h3 {
-      margin-top: 0;
-    }
-    .close-btn {
-      float: right;
-      background: none;
-      border: none;
-      font-size: 1.5em;
-      color: #fff;
-      cursor: pointer;
-    }
-    .checkout-btn {
-      margin-top: 1em;
-      width: 100%;
-      background: #0f0;
-      border: none;
-      padding: 0.7em;
-      font-weight: bold;
-      cursor: pointer;
-      color: #000;
-      border-radius: 5px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <h1 data-lang="site-title">Fishka</h1>
-    <div class="lang-switcher">
-      <button onclick="setLang('ru')" id="btn-ru">RU</button>
-      <button onclick="setLang('en')" id="btn-en">EN</button>
-      <button onclick="setLang('de')" id="btn-de">DE</button>
+    <div class="container">
+      <h1 data-lang="site-title">Fishka</h1>
+      <nav>
+        <button onclick="setLang('ru')" id="btn-ru">RU</button>
+        <button onclick="setLang('en')" id="btn-en">EN</button>
+        <button onclick="setLang('de')" id="btn-de">DE</button>
+        <button onclick="openCart()" data-lang="cart">Корзина</button>
+      </nav>
     </div>
   </header>
-
   <main>
-    <h2 data-lang="hero-title">Лови больше с бойлами Fishka</h2>
-    <p data-lang="hero-subtitle">Наши бойлы — лучший выбор для любого водоема.</p>
-    <button class="buy-btn" onclick="openCart()" data-lang="buy-button">Купить</button>
+    <section class="hero">
+      <h2 data-lang="hero-title">Лови больше с бойлами Fishka</h2>
+      <p data-lang="hero-subtitle">Наши бойлы — лучший выбор для любого водоема.</p>
+    </section>
+    <section id="catalog">
+      <div class="product">
+        <img src="boilies.jpg" alt="Boilies" />
+        <h3 data-lang="product-name">Бойлы клубничные</h3>
+        <p data-lang="price">€9.99</p>
+        <button onclick="addToCart()" data-lang="buy">Купить</button>
+      </div>
+    </section>
   </main>
 
-  <!-- Cart Modal -->
   <div class="modal" id="cartModal">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeCart()">×</button>
+      <span class="close-btn" onclick="closeCart()">×</span>
       <h3 data-lang="cart-title">Ваша корзина</h3>
-      <p data-lang="cart-item">1x Бойлы Fishka</p>
-      <p data-lang="cart-total">Итого: €9.99</p>
-      <button class="checkout-btn" data-lang="checkout-button">Оформить заказ</button>
+      <div id="cartItems"></div>
+      <p id="cartTotal" data-lang="total">Итого: €0.00</p>
+      <button onclick="checkout()" data-lang="checkout">Оформить заказ</button>
     </div>
   </div>
 
-  <script>
-    const translations = {
-      ru: {
-        "site-title": "Fishka",
-        "hero-title": "Лови больше с бойлами Fishka",
-        "hero-subtitle": "Наши бойлы — лучший выбор для любого водоема.",
-        "buy-button": "Купить",
-        "cart-title": "Ваша корзина",
-        "cart-item": "1x Бойлы Fishka",
-        "cart-total": "Итого: €9.99",
-        "checkout-button": "Оформить заказ"
-      },
-      en: {
-        "site-title": "Fishka",
-        "hero-title": "Catch more with Fishka boilies",
-        "hero-subtitle": "Our boilies are the best choice for any waters.",
-        "buy-button": "Buy",
-        "cart-title": "Your Cart",
-        "cart-item": "1x Fishka Boilies",
-        "cart-total": "Total: €9.99",
-        "checkout-button": "Checkout"
-      },
-      de: {
-        "site-title": "Fishka",
-        "hero-title": "Fange mehr mit Fishka Boilies",
-        "hero-subtitle": "Unsere Boilies sind die beste Wahl für jedes Gewässer.",
-        "buy-button": "Kaufen",
-        "cart-title": "Ihr Warenkorb",
-        "cart-item": "1x Fishka Boilies",
-        "cart-total": "Gesamt: €9.99",
-        "checkout-button": "Zur Kasse"
-      }
-    };
-
-    const langButtons = {
-      ru: document.getElementById("btn-ru"),
-      en: document.getElementById("btn-en"),
-      de: document.getElementById("btn-de")
-    };
-
-    function setLang(lang) {
-      localStorage.setItem('lang', lang);
-      document.querySelectorAll("[data-lang]").forEach(el => {
-        const key = el.getAttribute("data-lang");
-        if (translations[lang] && translations[lang][key]) {
-          el.innerText = translations[lang][key];
-        }
-      });
-      Object.keys(langButtons).forEach(k => {
-        langButtons[k].classList.toggle("active", k === lang);
-      });
-    }
-
-    const savedLang = localStorage.getItem('lang') || 'ru';
-    setLang(savedLang);
-
-    function openCart() {
-      document.getElementById("cartModal").style.display = "flex";
-    }
-
-    function closeCart() {
-      document.getElementById("cartModal").style.display = "none";
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
