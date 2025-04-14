@@ -192,13 +192,14 @@ function addToCart(name, price) {
   cartCount++;
   document.getElementById('cart-count').innerText = cartCount;
   updateCartModal();
+  document.getElementById('cart-modal').style.display = 'flex';
 }
 
 function updateCartModal() {
   const container = document.getElementById('cart-items');
   container.innerHTML = '';
   let total = 0;
-  cart.forEach((item, i) => {
+  cart.forEach((item) => {
     container.innerHTML += `<div class="cart-item">${item.name} - €${item.price.toFixed(2)}</div>`;
     total += item.price;
   });
@@ -206,8 +207,8 @@ function updateCartModal() {
 }
 
 function toggleCart() {
-  document.getElementById('cart-modal').style.display =
-    document.getElementById('cart-modal').style.display === 'flex' ? 'none' : 'flex';
+  const modal = document.getElementById('cart-modal');
+  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
 }
 
 function submitOrder() {
@@ -250,12 +251,17 @@ const translations = {
 };
 
 function setLang(lang) {
+  localStorage.setItem('lang', lang);
   document.querySelectorAll("[data-lang]").forEach(el => {
     const key = el.getAttribute("data-lang");
     if (translations[lang] && translations[lang][key]) {
       el.innerText = translations[lang][key];
     }
   });
+}
+
+if (localStorage.getItem('lang')) {
+  setLang(localStorage.getItem('lang'));
 }
 </script>
 
