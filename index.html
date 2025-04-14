@@ -184,85 +184,86 @@
 </footer>
 
 <script>
-let cartCount = 0;
-let cart = [];
+document.addEventListener("DOMContentLoaded", () => {
+  let cartCount = 0;
+  let cart = [];
 
-function addToCart(name, price) {
-  cart.push({name, price});
-  cartCount++;
-  document.getElementById('cart-count').innerText = cartCount;
-  updateCartModal();
-  document.getElementById('cart-modal').style.display = 'flex';
-}
-
-function updateCartModal() {
-  const container = document.getElementById('cart-items');
-  container.innerHTML = '';
-  let total = 0;
-  cart.forEach((item) => {
-    container.innerHTML += `<div class="cart-item">${item.name} - €${item.price.toFixed(2)}</div>`;
-    total += item.price;
-  });
-  document.getElementById('cart-total').innerText = total.toFixed(2);
-}
-
-function toggleCart() {
-  const modal = document.getElementById('cart-modal');
-  modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
-}
-
-function submitOrder() {
-  alert('Заказ отправлен!');
-  cart = [];
-  cartCount = 0;
-  document.getElementById('cart-count').innerText = '0';
-  toggleCart();
-}
-
-const translations = {
-  en: {
-    brand: "Fishka",
-    tagline: "Natural boilies for successful fishing",
-    hero-title: "Catch more with Fishka boilies",
-    see-catalog: "View Catalog",
-    catalog: "Product Catalog",
-    boil1: "Strawberry Boilie",
-    boil1-desc: "Aromatic bait for carp and grass carp. Natural ingredients.",
-    reviews: "Customer Reviews",
-    review1: ""Caught my first 10kg carp with the strawberry boilie! Amazing!"",
-    review2: ""Great quality, natural ingredients. I only buy from Fishka."",
-    review3: ""Works in any pond. Highly recommend!"",
-    insta: "Follow us on Instagram:"
-  },
-  de: {
-    brand: "Fishka",
-    tagline: "Natürliche Boilies für erfolgreiches Angeln",
-    hero-title: "Fange mehr mit Fishka-Boilies",
-    see-catalog: "Zum Katalog",
-    catalog: "Produktkatalog",
-    boil1: "Erdbeer-Boilie",
-    boil1-desc: "Aromatischer Köder für Karpfen. Natürliche Zutaten.",
-    reviews: "Kundenmeinungen",
-    review1: ""Habe meinen ersten 10-kg-Karpfen mit dem Erdbeer-Boilie gefangen! Super!"",
-    review2: ""Top Qualität, natürliche Zutaten. Nur Fishka für mich."",
-    review3: ""Funktioniert in jedem Gewässer. Sehr zu empfehlen!"",
-    insta: "Folge uns auf Instagram:"
+  window.addToCart = function(name, price) {
+    cart.push({name, price});
+    cartCount++;
+    document.getElementById('cart-count').innerText = cartCount;
+    updateCartModal();
+    document.getElementById('cart-modal').style.display = 'flex';
   }
-};
 
-function setLang(lang) {
-  localStorage.setItem('lang', lang);
-  document.querySelectorAll("[data-lang]").forEach(el => {
-    const key = el.getAttribute("data-lang");
-    if (translations[lang] && translations[lang][key]) {
-      el.innerText = translations[lang][key];
+  function updateCartModal() {
+    const container = document.getElementById('cart-items');
+    container.innerHTML = '';
+    let total = 0;
+    cart.forEach((item) => {
+      container.innerHTML += `<div class="cart-item">${item.name} - €${item.price.toFixed(2)}</div>`;
+      total += item.price;
+    });
+    document.getElementById('cart-total').innerText = total.toFixed(2);
+  }
+
+  window.toggleCart = function() {
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+  }
+
+  window.submitOrder = function() {
+    alert('Заказ отправлен!');
+    cart = [];
+    cartCount = 0;
+    document.getElementById('cart-count').innerText = '0';
+    toggleCart();
+  }
+
+  const translations = {
+    en: {
+      brand: "Fishka",
+      tagline: "Natural boilies for successful fishing",
+      hero-title: "Catch more with Fishka boilies",
+      see-catalog: "View Catalog",
+      catalog: "Product Catalog",
+      boil1: "Strawberry Boilie",
+      boil1-desc: "Aromatic bait for carp and grass carp. Natural ingredients.",
+      reviews: "Customer Reviews",
+      review1: ""Caught my first 10kg carp with the strawberry boilie! Amazing!"",
+      review2: ""Great quality, natural ingredients. I only buy from Fishka."",
+      review3: ""Works in any pond. Highly recommend!"",
+      insta: "Follow us on Instagram:"
+    },
+    de: {
+      brand: "Fishka",
+      tagline: "Natürliche Boilies für erfolgreiches Angeln",
+      hero-title: "Fange mehr mit Fishka-Boilies",
+      see-catalog: "Zum Katalog",
+      catalog: "Produktkatalog",
+      boil1: "Erdbeer-Boilie",
+      boil1-desc: "Aromatischer Köder für Karpfen. Natürliche Zutaten.",
+      reviews: "Kundenmeinungen",
+      review1: ""Habe meinen ersten 10-kg-Karpfen mit dem Erdbeer-Boilie gefangen! Super!"",
+      review2: ""Top Qualität, natürliche Zutaten. Nur Fishka für mich."",
+      review3: ""Funktioniert in jedem Gewässer. Sehr zu empfehlen!"",
+      insta: "Folge uns auf Instagram:"
     }
-  });
-}
+  };
 
-if (localStorage.getItem('lang')) {
-  setLang(localStorage.getItem('lang'));
-}
+  window.setLang = function(lang) {
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll("[data-lang]").forEach(el => {
+      const key = el.getAttribute("data-lang");
+      if (translations[lang] && translations[lang][key]) {
+        el.innerText = translations[lang][key];
+      }
+    });
+  }
+
+  const savedLang = localStorage.getItem('lang') || 'ru';
+  setLang(savedLang);
+});
 </script>
 
 </body>
